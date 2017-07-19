@@ -18,9 +18,11 @@
  * 
  * @param V Numero de vertices.
  */
-Graph::Graph(int V) {
-    this->V = V;
+Graph::Graph() {
+    read_names();
+    this->V = nom_pla.size();
     this->adj = new std::list<int>[V];
+    this->BP = new std::list<int>[V];
 }
 
 Graph::Graph(const Graph& orig) {
@@ -66,13 +68,13 @@ void Graph::BFS(int s, bool *visited) {
 }
 
 /*
- * Metodo que determina los puntos de ruptura de un grafo conexo.
+ * Método que determina los puntos de ruptura de un grafo conexo.
  * 
  * @see isB_Point(bool* visited)
  * @see BFS(int s, bool *visited)
  */
 void Graph::BreakingPoint() {
-    bool *visited = new bool[V];
+    bool* visited = new bool[V];
     for (int i = 0; i < V; i++) {
         if ((i + 1) < V) {
             //Se coloca todos los nodos como no visitado. (false)
@@ -90,6 +92,7 @@ void Graph::BreakingPoint() {
             }
         }
     }
+    delete(visited);
 }
 
 /**
@@ -106,5 +109,62 @@ bool Graph::isB_Point(bool* visited) {
         }
     }
     return enc;
+}
+
+void Graph::read_names() {
+    std::ifstream mapa_nombres("mapa_nombres.txt");
+    std::string c = ", ";
+    std::vector<std::string> aux;
+    std::string content;
+    if (!mapa_nombres.fail()) {
+        int i = 0, j = 0;
+        while (std::getline(mapa_nombres, content)) {
+            this->nom_pla = split(content, c[0]);
+        }
+    }
+    mapa_nombres.close();
+}
+
+void Graph::read_connections() {
+    std::ifstream mapa_conexiones("mapa_conexiones.txt");
+    std::string c = ", ";
+    std::vector<std::string> aux_fila_matrix;
+    std::vector<int> fila_matrix;
+    int matrix[V][V];
+    std::string content;
+    if (!mapa_conexiones.fail()) {
+        int j = 0;
+        while (std::getline(mapa_conexiones, content)) {
+            aux_fila_matrix = split(content, c[1]);
+            for (int i = 0; i < aux_fila_matrix.size(); i++) {
+                fila_matrix[i] = std::stoi(aux_fila_matrix[i]);
+                matrix[j][i] = fila_matrix[i];
+            }
+            j++;
+        }
+    }
+    mapa_conexiones.close();
+    for (int i = 0; i < V; i++) {
+        for (int j = 0; j < V; j++) {
+            if (matrix[i][j] == 1) {
+                addEdge(i, j);
+            }
+        }
+    }
+}
+
+std::vector<std::string> Graph::split(std::string str, char pattern) {
+    int posInit = 0;
+    int posFound = 0;
+    std::string splitted;
+    std::vector<std::string> resultados;
+
+    while (posFound >= 0) {
+        posFound = str.find(pattern, posInit);
+        splitted = str.substr(posInit, posFound - posInit);
+        posInit = posFound + 1;
+        resultados.push_back(splitted);
+    }
+    return resultados;
 }
 
