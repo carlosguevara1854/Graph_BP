@@ -13,31 +13,29 @@
 
 #ifndef GRAPH_H
 #define GRAPH_H
-#include <list>
-#include <queue>
 #include <fstream>
-#include <iostream>
+#include <list>
 #include <vector>
-#include <cstdlib>
+#include <iostream>
 
 class Graph {
 public:
     Graph();
     Graph(const Graph& orig);
     virtual ~Graph();
-    void addEdge(int v, int w);
-    void read_names();
-    void read_connections();
-    void write_BP();
     void BreakingPoint();
+    void write_BP();
 private:
     bool isB_Point(bool *visited);
     void BFS(int s, bool *visited);
     int V; //Número de vertices.
     std::list<int> *adj; //Lista de adyacencia.
-    std::list<int> *BP; //Lista de nodos determinados como nodo de ruptura.
+    std::vector<std::string> BP; //Contenedor de nodos determinados como nodo de ruptura.
     std::vector<std::string> split(std::string str, char pattern);
     std::vector<std::string> nom_pla;
+    void addEdge(int v, int w);
+    void read_names();
+    void read_connections();
 };
 
 #endif /* GRAPH_H */

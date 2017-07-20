@@ -1,0 +1,4 @@
+Saturno-Júpiter-Neptuno
+0 1 0
+1 0 1
+0 1 0

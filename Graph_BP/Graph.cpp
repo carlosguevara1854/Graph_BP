@@ -15,14 +15,12 @@
 
 /*
  * Contructor de la clase.
- * 
- * @param V Numero de vertices.
  */
 Graph::Graph() {
     read_names();
     this->V = nom_pla.size();
     this->adj = new std::list<int>[V];
-    this->BP = new std::list<int>[V];
+    read_connections();
 }
 
 Graph::Graph(const Graph& orig) {
@@ -88,7 +86,7 @@ void Graph::BreakingPoint() {
             //Se verifca si todo los nodos fueron recorridos.
             if (isB_Point(visited)) {
                 //Si el nodo determina un nodo de ruptura se guarda.
-                BP->push_back(i);
+                BP.push_back(this->nom_pla[i]);
             }
         }
     }
@@ -111,41 +109,54 @@ bool Graph::isB_Point(bool* visited) {
     return enc;
 }
 
+/**
+ * Método de lectura de los nombres de los nodos. (planetas)
+ * 
+ * @see split(string str, char pattern)
+ */
 void Graph::read_names() {
-    std::ifstream mapa_nombres("mapa_nombres.txt");
-    std::string c = ", ";
-    std::vector<std::string> aux;
+    std::ifstream map_names("mapa.txt");
+    std::string c = "-";
     std::string content;
-    if (!mapa_nombres.fail()) {
-        int i = 0, j = 0;
-        while (std::getline(mapa_nombres, content)) {
-            this->nom_pla = split(content, c[0]);
-        }
+    if (!map_names.fail()) {
+        std::getline(map_names, content);
+        this->nom_pla = split(content, c[0]);
     }
-    mapa_nombres.close();
+    map_names.close();
 }
 
+/**
+ * Método de lectura de las conexiones entre los nodos. (planetas)
+ * 
+ * @see split(string str, char pattern)
+ * @see addEdge(int v, int w)
+ */
 void Graph::read_connections() {
-    std::ifstream mapa_conexiones("mapa_conexiones.txt");
-    std::string c = ", ";
-    std::vector<std::string> aux_fila_matrix;
-    std::vector<int> fila_matrix;
+    std::ifstream read_connections("mapa.txt");
+    std::string c = " ";
+    std::vector<std::string> fila_matrix;
     int matrix[V][V];
     std::string content;
-    if (!mapa_conexiones.fail()) {
+    if (!read_connections.fail()) {
         int j = 0;
-        while (std::getline(mapa_conexiones, content)) {
-            aux_fila_matrix = split(content, c[1]);
-            for (int i = 0; i < aux_fila_matrix.size(); i++) {
-                fila_matrix[i] = std::stoi(aux_fila_matrix[i]);
-                matrix[j][i] = fila_matrix[i];
+        bool sw = false;
+        while (std::getline(read_connections, content)) {
+            if (sw == true) {
+                fila_matrix = split(content, c[0]);
+                for (int i = 0; i < fila_matrix.size(); i++) {
+                    matrix[j][i] = std::stoi(fila_matrix[i]);
+                }
+                j++;
+            } else {
+                sw = true;
             }
-            j++;
         }
     }
-    mapa_conexiones.close();
+    read_connections.close();
+    // LLenado de la lista de adyacencia, de acuerdo a la matriz.
     for (int i = 0; i < V; i++) {
         for (int j = 0; j < V; j++) {
+            //Se verifica si hay arco.
             if (matrix[i][j] == 1) {
                 addEdge(i, j);
             }
@@ -153,18 +164,44 @@ void Graph::read_connections() {
     }
 }
 
+/**
+ * Método que divide una cadena de caracteres.
+ * 
+ * @param str Cadena de caracteres que sera dividida.
+ * @param pattern Caracter o criterio de partición.
+ * @return Vector con las cadenas resultantes.
+ */
 std::vector<std::string> Graph::split(std::string str, char pattern) {
-    int posInit = 0;
-    int posFound = 0;
+    int posInit = 0, posFound = 0;
     std::string splitted;
-    std::vector<std::string> resultados;
-
+    std::vector<std::string> result;
     while (posFound >= 0) {
         posFound = str.find(pattern, posInit);
         splitted = str.substr(posInit, posFound - posInit);
         posInit = posFound + 1;
-        resultados.push_back(splitted);
+        result.push_back(splitted);
     }
-    return resultados;
+    return result;
+}
+
+/**
+ * Método de escritura en el archivo de salida.
+ * 
+ * @see split(string str, char pattern)
+ */
+void Graph::write_BP() {
+    std::string string_con;
+    for (int i = 0; i < this->BP.size(); i++) {
+        if ((i + 1) < this->BP.size()) {
+            string_con = string_con + this->BP[i] + " ";
+        } else {
+            string_con = string_con + this->BP[i];
+        }
+    }
+    std::ofstream ruptura("ruptura.txt");
+    if (!ruptura.fail()) {
+        ruptura << string_con;
+    }
+    ruptura.close();
 }
 
