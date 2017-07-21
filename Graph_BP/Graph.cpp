@@ -13,13 +13,17 @@
 
 #include "Graph.h"
 
-/*
+/**
  * Contructor de la clase.
  */
 Graph::Graph() {
+    //Se lee la primera línea del archivo "mapa.txt"; se almacenan los nombres
+    //en (nom_pla).
     read_names();
     this->V = nom_pla.size();
     this->adj = new std::list<int>[V];
+    //Se leen las conexiones en tre los nodos (planetas), en el archivo
+    //"mapa.txt", también se hace un llenado de la lista de adyacencia.
     read_connections();
 }
 
@@ -29,7 +33,7 @@ Graph::Graph(const Graph& orig) {
 Graph::~Graph() {
 }
 
-/*
+/**
  * Método que agrega una conexión entre nodos.
  * 
  * @param v Nodo al que se le agrega la conexión (w).
@@ -39,7 +43,7 @@ void Graph::addEdge(int v, int w) {
     adj[v].push_back(w);
 }
 
-/*
+/**
  * Método que realiza el recorrido BFS sobre el grafo, a partir de un nodo.
  * 
  * @param s Nodo desde el cual se empieza el recorrido.
@@ -49,7 +53,7 @@ void Graph::addEdge(int v, int w) {
 void Graph::BFS(int s, bool *visited) {
     std::list<int> queue; //Cola para realizar el recorrido.
     visited[s] = true;
-    queue.push_back(s);
+    queue.push_back(s); // Se encola el nodo de llegada. (s)
     std::list<int>::iterator i;
     //Se realiza el ciclo while mientras la cola no este vacía.
     while (!queue.empty()) {
@@ -65,7 +69,7 @@ void Graph::BFS(int s, bool *visited) {
     }
 }
 
-/*
+/**
  * Método que determina los puntos de ruptura de un grafo conexo.
  * 
  * @see isB_Point(bool* visited)
@@ -90,7 +94,7 @@ void Graph::BreakingPoint() {
             }
         }
     }
-    delete(visited);
+    delete(visited); //Free memory.
 }
 
 /**
@@ -116,7 +120,7 @@ bool Graph::isB_Point(bool* visited) {
  */
 void Graph::read_names() {
     std::ifstream map_names("mapa.txt");
-    std::string c = "-";
+    std::string c = ",";
     std::string content;
     if (!map_names.fail()) {
         std::getline(map_names, content);
@@ -134,17 +138,21 @@ void Graph::read_names() {
 void Graph::read_connections() {
     std::ifstream read_connections("mapa.txt");
     std::string c = " ";
+    //Variable auxiliar que representa una fila en la matriz.
     std::vector<std::string> fila_matrix;
+    //Se crea una matriz con la dimensiones de acuerdo al número planetas.
     int matrix[V][V];
     std::string content;
     if (!read_connections.fail()) {
-        int j = 0;
+        int j = 0; // Variable auxiliar para recorrer las columnas de la matriz.
+        //Nótese que la variable (sw) sirve para empezar a hacer el proceso de
+        //lectura en la segunda línea del archivo "mapa.txt".
         bool sw = false;
         while (std::getline(read_connections, content)) {
             if (sw == true) {
                 fila_matrix = split(content, c[0]);
                 for (int i = 0; i < fila_matrix.size(); i++) {
-                    matrix[j][i] = std::stoi(fila_matrix[i]);
+                    matrix[j][i] = std::stoi(fila_matrix[i]); // Se llena la matriz.
                 }
                 j++;
             } else {
@@ -158,7 +166,7 @@ void Graph::read_connections() {
         for (int j = 0; j < V; j++) {
             //Se verifica si hay arco.
             if (matrix[i][j] == 1) {
-                addEdge(i, j);
+                addEdge(i, j); //Se guarda el arco o conexión.
             }
         }
     }
@@ -190,16 +198,18 @@ std::vector<std::string> Graph::split(std::string str, char pattern) {
  * @see split(string str, char pattern)
  */
 void Graph::write_BP() {
-    std::string string_con;
+    std::string string_con; //Cadena donde se almacena todos los puntos de ruptura.
+    // Concatena las cadenas en una sola.
     for (int i = 0; i < this->BP.size(); i++) {
         if ((i + 1) < this->BP.size()) {
-            string_con = string_con + this->BP[i] + " ";
+            string_con = string_con + this->BP[i] + ",";
         } else {
             string_con = string_con + this->BP[i];
         }
     }
     std::ofstream ruptura("ruptura.txt");
     if (!ruptura.fail()) {
+        //Escritura de la cadena concatenada en el archivo "ruptura.txt".
         ruptura << string_con;
     }
     ruptura.close();
