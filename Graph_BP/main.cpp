@@ -7,7 +7,7 @@
 /* 
  * File:   main.cpp
  * Author: carlos
- *
+ * GitHub repository: https://github.com/carlosguevara1854/Graph_BP
  * Created on 18 de julio de 2017, 12:33 PM
  */
 

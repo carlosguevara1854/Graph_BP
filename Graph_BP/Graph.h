@@ -7,7 +7,7 @@
 /* 
  * File:   Graph.h
  * Author: carlos
- *
+ * GitHub repository: https://github.com/carlosguevara1854/Graph_BP
  * Created on 18 de julio de 2017, 12:33 PM
  */
 
@@ -17,6 +17,7 @@
 #include <list>
 #include <vector>
 #include <iostream>
+#include <boost/algorithm/string.hpp>
 
 class Graph {
 public:
@@ -31,7 +32,6 @@ private:
     int V; //Número de vertices.
     std::list<int>* adj; //Lista de adyacencia.
     std::vector<std::string> BP; //Contenedor de nodos determinados como nodo de ruptura.
-    std::vector<std::string> split(std::string str, char pattern);
     std::vector<std::string> nom_pla; //Contenedor de los nombres de los nodos (planetas).
     void addEdge(int v, int w);
     void read_names();

@@ -7,7 +7,7 @@
 /* 
  * File:   Graph.cpp
  * Author: carlos
- * 
+ * GitHub repository: https://github.com/carlosguevara1854/Graph_BP
  * Created on 18 de julio de 2017, 12:33 PM
  */
 
@@ -130,11 +130,10 @@ bool Graph::isB_Point(bool* visited) {
  */
 void Graph::read_names() {
     std::ifstream map_names("mapa.txt");
-    std::string c = ",";
     std::string content;
     if (!map_names.fail()) {
         std::getline(map_names, content);
-        this->nom_pla = split(content, c[0]);
+        boost::split(this->nom_pla, content, boost::is_any_of(","));
     }
     map_names.close();
 }
@@ -147,7 +146,6 @@ void Graph::read_names() {
  */
 void Graph::read_connections() {
     std::ifstream read_connections("mapa.txt");
-    std::string c = " ";
     //Variable auxiliar que representa una fila en la matriz.
     std::vector<std::string> fila_matrix;
     //Se crea una matriz con la dimensiones de acuerdo al número planetas.
@@ -160,7 +158,7 @@ void Graph::read_connections() {
         bool sw = false;
         while (std::getline(read_connections, content)) {
             if (sw == true) {
-                fila_matrix = split(content, c[0]);
+                boost::split(fila_matrix, content, boost::is_any_of(" "));
                 for (int i = 0; i < fila_matrix.size(); i++) {
                     matrix[j][i] = std::stoi(fila_matrix[i]); // Se llena la matriz.
                 }
@@ -183,33 +181,13 @@ void Graph::read_connections() {
 }
 
 /**
- * Método que divide una cadena de caracteres.
- * 
- * @param str Cadena de caracteres que sera dividida.
- * @param pattern Caracter o criterio de partición.
- * @return Vector con las cadenas resultantes.
- */
-std::vector<std::string> Graph::split(std::string str, char pattern) {
-    int posInit = 0, posFound = 0;
-    std::string splitted;
-    std::vector<std::string> result;
-    while (posFound >= 0) {
-        posFound = str.find(pattern, posInit);
-        splitted = str.substr(posInit, posFound - posInit);
-        posInit = posFound + 1;
-        result.push_back(splitted);
-    }
-    return result;
-}
-
-/**
  * Método de escritura en el archivo de salida.
  * 
  * @see split(string str, char pattern)
  */
 void Graph::write_BP() {
     std::string string_con; //Cadena donde se almacena todos los puntos de ruptura.
-    // Concatena las cadenas en una sola.
+    // Concatenación de las cadenas en una sola.
     for (int i = 0; i < this->BP.size(); i++) {
         if ((i + 1) < this->BP.size()) {
             string_con = string_con + this->BP[i] + ",";
