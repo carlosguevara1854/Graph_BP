@@ -19,8 +19,9 @@
 
 int main(int argc, char** argv) {
     Graph grafo; //Creación del objeto de tipo (Graph).
-    grafo.BreakingPoint(); //Se determinan los nodos de ruptura.
+    grafo.BreakingPoint(); //Se determinan los nodos de ruptura del grafo.
     grafo.write_BP(); //Se escribe en el archivo de salida "ruptura.txt".
+    grafo.~Graph(); //Free memory.
     return 0;
 }
 
