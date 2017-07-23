@@ -65,7 +65,7 @@ void Graph::addEdge(int v, int w) {
 void Graph::BFS(int s, bool *visited) {
     std::list<int> queue; //Cola para realizar el recorrido.
     visited[s] = true;
-    queue.push_back(s); // Se encola el nodo de llegada. (s)
+    queue.push_back(s); //Se encola el nodo de llegada. (s)
     std::list<int>::iterator i;
     //Se realiza el ciclo while mientras la cola no este vacía.
     while (!queue.empty()) {
@@ -166,7 +166,7 @@ void Graph::read_connections() {
             if (sw == true) {
                 fila_matrix = split(content, c[0]);
                 for (int i = 0; i < fila_matrix.size(); i++) {
-                    matrix[j][i] = std::stoi(fila_matrix[i]); // Se llena la matriz.
+                    matrix[j][i] = std::stoi(fila_matrix[i]); //Se llena la matriz.
                 }
                 j++;
             } else {
@@ -213,7 +213,7 @@ std::vector<std::string> Graph::split(std::string str, char pattern) {
  */
 void Graph::write_BP() {
     std::string string_con; //Cadena donde se almacenará todos los puntos de ruptura.
-    // Concatenación de las cadenas en una sola.
+    //Concatenación de las cadenas en una sola.
     for (int i = 0; i < this->BP.size(); i++) {
         if ((i + 1) < this->BP.size()) {
             string_con = string_con + this->BP[i] + ",";
