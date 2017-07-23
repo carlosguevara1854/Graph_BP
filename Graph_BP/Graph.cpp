@@ -7,7 +7,7 @@
 /* 
  * File:   Graph.cpp
  * Author: carlos
- * 
+ * GitHub repository: https://github.com/carlosguevara1854/Graph_BP
  * Created on 18 de julio de 2017, 12:33 PM
  */
 
@@ -20,6 +20,8 @@ Graph::Graph() {
     //Se lee la primera línea del archivo "mapa.txt"; se almacenan los nombres
     //en (nom_pla).
     read_names();
+    //De acuerdo a la cantidad de nombres, es decir la cantidad de planetas, se
+    //reserva memoria con la misma cantidad.
     this->V = nom_pla.size();
     this->adj = new std::list<int>[V];
     //Se leen las conexiones en tre los nodos (planetas), en el archivo
@@ -69,6 +71,8 @@ void Graph::BFS(int s, bool *visited) {
     while (!queue.empty()) {
         s = queue.front();
         queue.pop_front();
+        //Se realiza un ciclo "for", para todos los arcos del nodo, de dicho nodo
+        //en la posición (s) de la lista de adyancencia.
         for (i = adj[s].begin(); i != adj[s].end(); ++i) {
             //Si no ha sido recorrido, se agrega como recorrido, y se encola.
             if (!visited[*i]) {
@@ -208,8 +212,8 @@ std::vector<std::string> Graph::split(std::string str, char pattern) {
  * @see split(string str, char pattern)
  */
 void Graph::write_BP() {
-    std::string string_con; //Cadena donde se almacena todos los puntos de ruptura.
-    // Concatena las cadenas en una sola.
+    std::string string_con; //Cadena donde se almacenará todos los puntos de ruptura.
+    // Concatenación de las cadenas en una sola.
     for (int i = 0; i < this->BP.size(); i++) {
         if ((i + 1) < this->BP.size()) {
             string_con = string_con + this->BP[i] + ",";
