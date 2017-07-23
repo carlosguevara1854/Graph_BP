@@ -63,7 +63,7 @@ void Graph::addEdge(int v, int w) {
 void Graph::BFS(int s, bool *visited) {
     std::list<int> queue; //Cola para realizar el recorrido.
     visited[s] = true;
-    queue.push_back(s); // Se encola el nodo de llegada. (s)
+    queue.push_back(s); //Se encola el nodo de llegada. (s)
     std::list<int>::iterator i;
     //Se realiza el ciclo while mientras la cola no este vacía.
     while (!queue.empty()) {
@@ -152,7 +152,7 @@ void Graph::read_connections() {
     int matrix[V][V];
     std::string content;
     if (!read_connections.fail()) {
-        int j = 0; // Variable auxiliar para recorrer las columnas de la matriz.
+        int j = 0; //Variable auxiliar para recorrer las columnas de la matriz.
         //Nótese que la variable (sw) sirve para empezar a hacer el proceso de
         //lectura en la segunda línea del archivo "mapa.txt".
         bool sw = false;
@@ -160,7 +160,7 @@ void Graph::read_connections() {
             if (sw == true) {
                 boost::split(fila_matrix, content, boost::is_any_of(" "));
                 for (int i = 0; i < fila_matrix.size(); i++) {
-                    matrix[j][i] = std::stoi(fila_matrix[i]); // Se llena la matriz.
+                    matrix[j][i] = std::stoi(fila_matrix[i]); //Se llena la matriz.
                 }
                 j++;
             } else {
@@ -169,7 +169,7 @@ void Graph::read_connections() {
         }
     }
     read_connections.close();
-    // LLenado de la lista de adyacencia, de acuerdo a la matriz.
+    //LLenado de la lista de adyacencia, de acuerdo a la matriz.
     for (int i = 0; i < V; i++) {
         for (int j = 0; j < V; j++) {
             //Se verifica si hay arco.
@@ -187,7 +187,7 @@ void Graph::read_connections() {
  */
 void Graph::write_BP() {
     std::string string_con; //Cadena donde se almacena todos los puntos de ruptura.
-    // Concatenación de las cadenas en una sola.
+    //Concatenación de las cadenas en una sola.
     for (int i = 0; i < this->BP.size(); i++) {
         if ((i + 1) < this->BP.size()) {
             string_con = string_con + this->BP[i] + ",";
