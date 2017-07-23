@@ -27,10 +27,20 @@ Graph::Graph() {
     read_connections();
 }
 
+/**
+ * 
+ * Copy constructor.
+ * 
+ * @param orig
+ */
 Graph::Graph(const Graph& orig) {
 }
 
+/**
+ * Free memory
+ */
 Graph::~Graph() {
+    delete[] adj;
 }
 
 /**
@@ -94,7 +104,7 @@ void Graph::BreakingPoint() {
             }
         }
     }
-    delete(visited); //Free memory.
+    delete[] visited; //Free memory.
 }
 
 /**

@@ -18,10 +18,9 @@
  */
 
 int main(int argc, char** argv) {
-    Graph* test = new Graph();
-    test->BreakingPoint(); //Se determinan los nodos de ruptura.
-    test->write_BP(); //Se escribe en el archivo de salida.
-    delete(test); //Free memory.
+    Graph grafo;
+    grafo.BreakingPoint(); //Se determinan los nodos de ruptura.
+    grafo.write_BP(); //Se escribe en el archivo de salida.
     return 0;
 }
 
