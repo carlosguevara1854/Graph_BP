@@ -17,6 +17,7 @@
 #include <list>
 #include <vector>
 #include <iostream>
+#include <string>
 
 class Graph {
 public:
@@ -32,7 +33,7 @@ private:
     std::list<int>* adj; //Lista de adyacencia.
     std::vector<std::string> BP; //Contenedor de nodos determinados como nodo de ruptura.
     std::vector<std::string> split(std::string str, char pattern);
-    std::vector<std::string> nom_pla; //Contenedor de los nombres de los nodos (planetas).
+    std::vector<std::string> nom_pla; //Contenedor de los nombres de los nodos. (planetas)
     void addEdge(int v, int w);
     void read_names();
     void read_connections();

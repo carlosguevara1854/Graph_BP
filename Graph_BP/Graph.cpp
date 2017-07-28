@@ -138,6 +138,8 @@ void Graph::read_names() {
     std::string content;
     if (!map_names.fail()) {
         std::getline(map_names, content);
+        content.erase(content.begin());
+        content.erase(content.end() - 1);
         this->nom_pla = split(content, c[0]);
     }
     map_names.close();
@@ -212,20 +214,32 @@ std::vector<std::string> Graph::split(std::string str, char pattern) {
  * @see split(string str, char pattern)
  */
 void Graph::write_BP() {
-    std::string string_con; //Cadena donde se almacenará todos los puntos de ruptura.
-    //Concatenación de las cadenas en una sola.
-    for (int i = 0; i < this->BP.size(); i++) {
-        if ((i + 1) < this->BP.size()) {
-            string_con = string_con + this->BP[i] + ",";
-        } else {
-            string_con = string_con + this->BP[i];
-        }
-    }
     std::ofstream ruptura("ruptura.txt");
-    if (!ruptura.fail()) {
-        //Escritura de la cadena concatenada en el archivo "ruptura.txt".
-        ruptura << string_con;
+    std::string diff = " ";
+    //Verificación si se determinaron nodos de ruptura.
+    if (BP.size() != 0) {
+        std::string string_con = "["; //Cadena donde se almacenará todos los puntos de ruptura.
+        //Concatenación de las cadenas en una sola.
+        for (int i = 0; i < this->BP.size(); i++) {
+            if ((i + 1) < this->BP.size()) {
+                string_con = string_con + this->BP[i] + ",";
+            } else {
+                string_con = string_con + this->BP[i];
+            }
+        }
+        string_con = string_con + "]";
+        if (string_con[1] == diff[0]) {
+            string_con.erase(string_con.begin() + 1);
+        }
+        if (!ruptura.fail()) {
+            //Escritura de la cadena concatenada en el archivo "ruptura.txt".
+            ruptura << string_con;
+        }
+        ruptura.close();
+    } else {
+        //Si no se econtraron nodos de rupturas.
+        ruptura.clear(); //Limpieza del contenido del archivo.
+        ruptura.close();
     }
-    ruptura.close();
 }
 
